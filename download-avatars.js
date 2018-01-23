@@ -2,9 +2,10 @@ var request = require('request');
 var fs = require('fs');
 
 console.log('Welcome to the GitHub Avatar Downloader!');
-if(process.argv.length < 4 || process.argv.length > 6) {
+if(process.argv.length !== 4) {
   console.log("Please enter two arguments of repoOwner and repoName " + process.argv.slice(2).length
     + " were entered...");
+  return 0;
 }
 
 var repoOwner = process.argv.slice(2)[0];
@@ -16,7 +17,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
   var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
-      'User-Agent': 'request'
+      'User-Agent': 'request'  
     }
   };
 
