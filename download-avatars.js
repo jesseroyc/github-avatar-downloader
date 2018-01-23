@@ -2,6 +2,14 @@ var request = require('request');
 var fs = require('fs');
 
 console.log('Welcome to the GitHub Avatar Downloader!');
+if(process.argv.length < 4 || process.argv.length > 6) {
+  console.log("Please enter two arguments of repoOwner and repoName " + process.argv.slice(2).length
+    + " were entered...");
+}
+
+var repoOwner = process.argv.slice(2)[0];
+var repoName = process.argv.slice(2)[1];
+
 
 function getRepoContributors(repoOwner, repoName, cb) {
 
@@ -33,16 +41,14 @@ function downloadImageByURL(url, filePath) {
 }
 
 //Test on this repo at some point: https://github.com/nodejs/node
-getRepoContributors("jquery", "jquery", function(err, result) {
-  console.log("Errors:", err);
-  console.log("Result:", result);
+getRepoContributors(repoOwner, repoName, function(err, result) {
+  //console.log("Errors:", err);
+  //console.log("Result:", result);
 
   var data = JSON.parse(result);
 
   data.forEach(function (obj) {
-    console.log('\n');
-    var fp = "./avatar" + obj.name + ".jpg";
+    var fp = "./avatar" + obj.name + ".jpg" ;
     downloadImageByURL(obj.avatar_url, fp);
-    console.log('\n');
   });
 });
