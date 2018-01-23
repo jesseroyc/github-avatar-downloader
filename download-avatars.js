@@ -2,16 +2,20 @@ var request = require('request');
 var fs = require('fs');
 
 console.log('Welcome to the GitHub Avatar Downloader!');
+
+/* Takes command line arguments and troubleshoots
+ */
 if(process.argv.length !== 4) {
   console.log("Please enter two arguments of repoOwner and repoName " + process.argv.slice(2).length
     + " were entered...");
   return 0;
 }
-
 var repoOwner = process.argv.slice(2)[0];
 var repoName = process.argv.slice(2)[1];
 
-
+/* Takes repository owner and name, creates a link for a request
+ * Header opens access to API
+ */
 function getRepoContributors(repoOwner, repoName, cb) {
 
   var options = {
@@ -27,6 +31,9 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
 }
 
+/* Outputs diffrently based on how the request was handled
+ * Downloads images from a URL
+ */
 function downloadImageByURL(url, filePath) {
   request.get(url)
          .on('error', function (err) {
@@ -41,10 +48,8 @@ function downloadImageByURL(url, filePath) {
   .pipe(fs.createWriteStream(filePath));
 }
 
-//Test on this repo at some point: https://github.com/nodejs/node
+//FIX ME: Test on this repo at some point: https://github.com/nodejs/node
 getRepoContributors(repoOwner, repoName, function(err, result) {
-  //console.log("Errors:", err);
-  //console.log("Result:", result);
 
   var data = JSON.parse(result);
 
